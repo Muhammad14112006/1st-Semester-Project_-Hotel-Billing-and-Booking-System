@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <fstream>
 #include <iomanip>
@@ -57,12 +58,28 @@ bool NameExists(string name);
 bool PasswordExists(string pass);
 bool CheckStaff(string StaffName, string StaffPass);
 
+// Colour Code
+string reset   = "\033[0m";
+string red     = "\033[31m";
+string green   = "\033[32m";
+string yellow  = "\033[33m";
+string blue    = "\033[34m";
+string magenta = "\033[35m";
+string cyan    = "\033[36m";
+string white   = "\033[37m";
+string b_red   = "\033[91m"; // Bright Red
+string b_green = "\033[92m"; // Bright Green
+string b_cyan  = "\033[96m"; // Bright Cyan
+
 // Main Function
 
 int main()
 {
     LoadRoomPrice();
-    cout<<setfill('#')<<setw(40)<<""<<endl;
+ while (running)
+ {
+    system("cls");
+    cout<<cyan<<setfill('#')<<setw(40)<<""<<reset<<endl;
     for(int i = 0; i < 5; i++)
     {
         printH(i);
@@ -74,13 +91,16 @@ int main()
         printS(i);
         cout<<endl;
     }
-    cout<<setfill('#')<<setw(40)<<""<<endl;
- while(running)
- {
+    cout<<cyan<<setfill('#')<<setw(40)<<""<<reset<<endl;
      LoginPage();
 
      if (choice == 1)
      {
+        system ("cls");
+        cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+        cout<<green<<"        Admin Login"<<reset<<endl;
+        cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+
         AdminLogin();
         bool check = CheckAdmin(username, password);
 
@@ -171,7 +191,8 @@ int main()
         bool check = CheckStaff(username, password);
         if (check)
         {
-            cout<<"Staff Login Successful"<<endl;
+            cout<<"\n"<<green<<"Staff Login Successful"<<reset<<endl;
+            system("pause");
             choice = StaffMenu();
             switch (choice)
             {
@@ -230,13 +251,13 @@ int main()
 void printH(int row) 
 {
     string H[5] = {
-        "#   #",
-        "#   #",
-        "#####",
-        "#   #",
-        "#   #"
+        "     #   #",
+        "     #   #",
+        "     #####",
+        "     #   #",
+        "     #   #"
     };
-    cout << H[row];
+    cout <<green<< H[row]<<reset;
 }
 
 // Print B Function
@@ -251,7 +272,7 @@ void printB(int row)
         "#   #",
         "#### "
     };
-    cout << B[row];
+    cout <<green<< B[row]<<reset;
 }
 
 // Print S Function
@@ -266,7 +287,7 @@ void printS(int row)
         "    #",
         "#### "
     };
-    cout << S[row];
+    cout <<green<< S[row]<<reset;
 }
 
 // Login Page Function
@@ -276,7 +297,7 @@ int LoginPage()
     cout<<"\nEnter Login Type: \n"<<endl;
     cout<<"1. Admin"<<endl;
     cout<<"2. Staff"<<endl;
-    cout<<"Choose your preference (1/2): ";
+    cout<<"\n"<<yellow<<"Choose your preference (1/2): "<<reset;
     string input;
     getline(cin, input);
     try
@@ -335,9 +356,10 @@ bool CheckAdmin(string AdminName, string AdminPass)
 
 int AdminMenu()
 {
-    cout<<"\n"<<setfill('-')<<setw(30)<<""<<endl;
-    cout<<"Admin Menu"<<endl;
-    cout<<setfill('-')<<setw(30)<<""<<endl;
+    system("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"        Admin Menu"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
     cout<<"\n1. Add New Admin"<<endl;
     cout<<"2. Remove Admin"<<endl;
     cout<<"3. Update Admin Password"<<endl;
@@ -354,28 +376,32 @@ int AdminMenu()
     cout<<"14. Update Room Prices"<<endl;
     cout<<"15. Exit"<<endl;
    while (true)
-{
-    cout << "\nEnter your choice: ";
-    string option;
-    getline(cin, option);
+   {
+       cout << yellow<<"\nEnter your choice: "<<reset;
+       string option;
+       getline(cin, option);
 
-    try 
-    {
-        choice = stoi(option);
-        break;
-    }
-    catch (...) 
-    {
-        cout << "Invalid input! Please enter a number only.\n";
-    }
-}
-    return choice;
+       try 
+       {
+           choice = stoi(option);
+           break;
+       }
+        catch (...) 
+       {
+           cout << "Invalid input! Please enter a number only.\n";
+       }
+   }
+       return choice;
 }
 
 // Add Admin Function   
 
 string AddAdmin()
 {
+    system("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"        Add New Admin"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
     string name, pass, c_pass;
 
     fstream file("Admin.txt", ios::app);
@@ -391,13 +417,21 @@ string AddAdmin()
 
         if (name.empty())
         {
-            cout << "Name cannot be empty. Try Again..." << endl;
+            system("cls");
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout<<green<<"        Add New Admin"<<reset<<endl;
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout <<red<< "Name cannot be empty. Try Again..." <<reset<< endl;
             continue;
         }
 
         if (NameExists(name))
         {
-            cout << "Admin name already exists. Try Again..." << endl;
+            system ("cls");
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout<<green<<"        Add New Admin"<<reset<<endl;
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout <<red<< "Admin name already exists. Try Again..." <<reset<< endl;
             continue;
         }
 
@@ -406,7 +440,11 @@ string AddAdmin()
 
         if (!IsStrongPassword(pass))
         {
-            cout << "Password must be 6–15 chars and include upper, lower, digit, special. Try Again..." << endl;
+            system ("cls");
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout<<green<<"        Add New Admin"<<reset<<endl;
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout <<red<< "Password must be 6 to 15 chars and include upper, lower, digit, special. Try Again..." <<reset<< endl;
             continue;
         }
 
@@ -415,13 +453,21 @@ string AddAdmin()
 
         if (pass != c_pass)
         {
-            cout << "Passwords do not match. Try Again..." << endl;
+            system ("cls");
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout<<green<<"        Add New Admin"<<reset<<endl;
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout <<red<< "Passwords do not match. Try Again..." <<reset<< endl;
             continue;
         }
 
         if (PasswordExists(pass))
         {
-            cout << "Password already in use. Try Again..." << endl;
+            system ("cls");
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout<<green<<"        Add New Admin"<<reset<<endl;
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout <<red<< "Password already in use. Try Again..." <<reset<< endl;
             continue;
         }
 
@@ -439,6 +485,10 @@ string AddAdmin()
 
 string RemoveAdmin()
 {
+    system("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"        Remove Admin"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
     string d_name, a_name, a_pass, blank;
 
     cout << "Enter the Name of the admin to delete: ";
@@ -485,7 +535,7 @@ string RemoveAdmin()
     {
         return "Admin Removed Successfully.";
     }
-else
+    else
     {
         return "The Given Admin name doesn't exist.";
     }
@@ -496,6 +546,10 @@ else
 
 string UpdateAdminPass()
 {
+    system ("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"        Update Admin Password"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
     string username, CurrentPass, NewPass, c_NewPass;
     string a_name, a_pass, blank;
 
@@ -536,7 +590,11 @@ string UpdateAdminPass()
                 getline(cin, NewPass);
                 if(!IsStrongPassword(NewPass))
                 {
-                    cout << "Password is not strong enough. It must be 6-15 characters long and include uppercase, lowercase, digit, and special character. Try Again..." << endl;
+                    system ("cls");
+                    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+                    cout<<green<<"        Update Admin Password"<<reset<<endl;
+                    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+                    cout<<red<< "Password is not strong enough. It must be 6-15 characters long and include uppercase, lowercase, digit, and special character. Try Again..." <<reset<<endl;
                     continue;
                 }
 
@@ -545,13 +603,21 @@ string UpdateAdminPass()
 
                 if (NewPass != c_NewPass)
                 {
-                    cout << "Passwords do not match. Try again (" << 9 - i << " attempts left)" << endl;
+                    system ("cls");
+                    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+                    cout<<green<<"        Update Admin Password"<<reset<<endl;
+                    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+                    cout<<red<< "Passwords do not match. Try again (" << 9 - i << " attempts left)" <<reset<<endl;
                     continue;
                 }
 
                 if (PasswordExists(NewPass))
                 {
-                    cout << "Password already in use. Try Again..." << endl;
+                    system ("cls");
+                    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+                    cout<<green<<"        Update Admin Password"<<reset<<endl;
+                    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+                    cout<<red<< "Password already in use. Try Again..." <<reset<<endl;
                     continue;
                 }
 
@@ -594,10 +660,10 @@ string UpdateAdminPass()
 void AdminList()
 {
     string a_name, a_pass, blank;
-
-    cout<< setfill('-') << setw(30) << "" << endl;
-    cout << "Admin List:\n";
-    cout << setfill('-') << setw(30) << "" << endl;
+    system("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout <<green<< "       Admin List:\n"<<reset;
+    cout <<cyan << setfill('-') << setw(30) << "" <<reset<< endl;
 
     fstream file("Admin.txt", ios::in);
     if (!file.is_open())
@@ -616,12 +682,19 @@ void AdminList()
     }
 
     file.close();
+
+    cout<<"\n" <<yellow<< "Enter any key to go back to the main menu: "<<reset<<endl;
+    system("pause");
 }
 
 // Add Staff Function
 
 string AddStaff()
 {
+    system("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"        Add New Staff"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
     string name, pass, c_pass;
     fstream file("Staff.txt", ios::app);
 
@@ -641,19 +714,31 @@ string AddStaff()
 
         if (pass != c_pass)
         {
-            cout << "Passwords do not match. Try Again..." << endl;
+            system("cls");
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout<<green<<"        Add New Staff"<<reset<<endl;
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout <<red<< "Passwords do not match. Try Again..." <<reset<< endl<<endl;
             continue;
         }
 
         if(!IsStrongPassword(pass))
         {
-            cout << "Password is not strong enough. It must be 6-15 characters long and include uppercase, lowercase, digit, and special character. Try Again..." << endl;
+            system("cls");
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout<<green<<"        Add New Staff"<<reset<<endl;
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout <<red<< "Password is not strong enough. It must be 6-15 characters long and include uppercase, lowercase, digit, and special character. Try Again..." <<reset<< endl<<endl;
             continue;
         }
 
         if (CheckStaff(name, pass))
         {
-            cout << "Staff with this name and password already exists. Try Again..." << endl;
+            system("cls");
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout<<green<<"        Add New Staff"<<reset<<endl;
+            cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+            cout <<red<< "Staff with this name and password already exists. Try Again..." <<reset<< endl<<endl;
             continue;
         }
 
@@ -672,6 +757,10 @@ string AddStaff()
 
 string RemoveStaff()
 {
+    system("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"        Remove Staff"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
     string d_name, s_name, s_pass, blank;
 
     cout << "Enter the Name of the staff to delete: ";
@@ -681,7 +770,9 @@ string RemoveStaff()
     fstream temp("temp.txt", ios::out);
 
     if (!file.is_open())
+    {
         return "Error! File could not be opened.";
+    }
 
     if (!temp.is_open())
     {
@@ -714,10 +805,14 @@ string RemoveStaff()
 
     if (found)
     {
+        cout<<"\n"<<green<< "Staff Removed Successfully." <<reset<<endl<<endl;
+        system("pause");
         return "Staff Removed Successfully.";
     }
     else
     {
+        cout<<"\n"<<red<< "The Given Staff name doesn't exist." <<reset<<endl<<endl;
+        system("pause");
         return "The Given Staff name doesn't exist.";
     }
 
@@ -727,6 +822,11 @@ string RemoveStaff()
 
 string UpdateStaffPass()
 {
+    system ("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"    Update Staff Password"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+
     string username, CurrentPass, NewPass, c_NewPass;
     string s_name, s_pass, blank;
 
@@ -771,19 +871,31 @@ string UpdateStaffPass()
 
                 if (NewPass != c_NewPass)
                 {
-                    cout << "Passwords do not match. Try again (" << 9 - i << " attempts left)" << endl;
+                    system ("cls");
+                    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+                    cout<<green<<"    Update Staff Password"<<reset<<endl;
+                    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+                    cout << "Passwords do not match. Try again (" << 9 - i << " attempts left)" << endl<<endl;
                     continue;
                 }
 
                 if(!IsStrongPassword(NewPass))
                 {
-                    cout << "Password is not strong enough. It must be 6-15 characters long and include uppercase, lowercase, digit, and special character. Try Again..." << endl;
+                    system ("cls");
+                    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+                    cout<<green<<"    Update Staff Password"<<reset<<endl;
+                    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+                    cout << "Password is not strong enough. It must be 6-15 characters long and include uppercase, lowercase, digit, and special character. Try Again..." << endl<<endl;
                     continue;
                 }
 
                 if (CheckStaff(s_name, NewPass))
                 {
-                    cout << "Password already in use. Try Again..." << endl;
+                    system ("cls");
+                    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+                    cout<<green<<"    Update Staff Password"<<reset<<endl;
+                    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+                    cout << "Password already in use. Try Again..." << endl<<endl;
                     continue;
                 }
 
@@ -809,14 +921,20 @@ string UpdateStaffPass()
     rename("temp.txt", "Staff.txt");
     if (found && updated)
     {
+        cout<<"\n"<<green<<"Password Updated Successfully." <<reset<<endl<<endl;
+        system("pause");
         return "Password Updated Successfully.";
     }
     else if (found && !updated) 
     {
+        cout<<"\n"<<red<< "Failed: Password not updated after attempts." <<reset<<endl<<endl;
+        system("pause");
         return "Failed: Password not updated after attempts.";
     }
     else 
     {
+        cout<<"\n"<<red<< "The user couldn't be found." <<reset<<endl<<endl;
+        system("pause");
         return "The user couldn't be found.";
     } 
 }
@@ -825,11 +943,12 @@ string UpdateStaffPass()
 
 string StaffList()
 {
+    system ("cls");
     string s_name, s_pass, blank;
 
-    cout<< setfill('-') << setw(30) << "" << endl;
-    cout << "Staff List:\n";
-    cout << setfill('-') << setw(30) << "" << endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"      Staff List:"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
 
     fstream file("Staff.txt", ios::in);
     if (!file.is_open())
@@ -847,6 +966,8 @@ string StaffList()
     }
 
     file.close();
+    cout<<endl;
+    system("pause");
     return "Success";
 }
 
@@ -854,6 +975,7 @@ string StaffList()
 
 void ViewRoomsStatus()
 {
+    system ("cls");
     fstream file("Rooms.txt", ios::in);
     if (!file.is_open())
     {
@@ -861,9 +983,9 @@ void ViewRoomsStatus()
         return;
     }
 
-    cout<< setfill('-') << setw(40) << "" << endl;
-    cout << "Rooms Status:\n";
-    cout << setfill('-') << setw(40) << "" << endl;
+    cout<<cyan<<setfill('-')<<setw(40)<<""<<reset<<endl;
+    cout<<green<<"      Rooms Status:"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(40)<<""<<reset<<endl;
 
     string RoomNum, Status, guest;
 
@@ -886,12 +1008,18 @@ void ViewRoomsStatus()
         cout<<RoomNum<<"\t"<<Status<<"\t"<<guest<<endl;
     }
     file.close();
+    cout<<endl;
+    system("pause");
 }
 
 // Add Rooms function
 
 string AddRooms()
 {
+    system ("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"      Add New Room"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl<<endl;
     string roomNum, status, guest;
 
     fstream file("Rooms.txt", ios::app);
@@ -909,12 +1037,19 @@ string AddRooms()
     file << roomNum << " " << status << " " << guest << "\n";
     file.close();
 
+    cout<<green<< "Room Added Successfully." <<reset<<endl<<endl;
+    system("pause");
     return "Room Added Successfully.";
 }
 // Remove Rooms function
 
 string RemoveRooms()
 {
+    system ("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"      Remove Room"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl<<endl;
+
     string r_num, RoomNum, Status, guest;
 
     cout << "Enter Room Number to remove: ";
@@ -968,10 +1103,14 @@ string RemoveRooms()
 
     if (found)
     {
+        cout<<green<< "Room Removed Successfully." <<reset<<endl<<endl;
+        system("pause");
         return "Room Removed Successfully.";
     }
     else
     {
+        cout<<red<< "The Given Room number doesn't exist." <<reset<<endl<<endl;
+        system("pause");
         return "The Given Room number doesn't exist.";
     }
 }
@@ -987,9 +1126,9 @@ void ViewAllBookings()
         return;
     }
 
-    cout<< setfill('-') << setw(50) << "" << endl;
-    cout << "All Bookings:\n";
-    cout << setfill('-') << setw(50) << "" << endl;
+    cout<<cyan<<setfill('-') << setw(30) << "" <<reset<< endl;
+    cout<<green<<"      All Bookings\n"<<reset;
+    cout<<cyan<<setfill('-') << setw(30) << "" <<reset<< endl;
 
     string bookingID, guestName, roomNum, checkIn, checkOut;
 
@@ -1005,7 +1144,8 @@ void ViewAllBookings()
 
         cout << "Booking ID: " << bookingID << ", Guest Name: " << guestName<< ", Room Number: " << roomNum << ", Check-In: " << checkIn<< ", Check-Out: " << checkOut << endl;
     }
-
+    cout<<endl;
+    system("pause");
     file.close();
 }
 
@@ -1119,9 +1259,11 @@ int StaffLogin()
 
 void StaffSignIn()
 {
-    cout<<setfill('-')<<setw(30)<<""<<endl;
-    cout<<"Staff Sign In"<<endl;
-    cout<<setfill('-')<<setw(30)<<""<<endl;
+    system("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"Staff Sign In"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+
     cout<<"Enter username: ";
     getline(cin, username);
 
@@ -1162,9 +1304,10 @@ bool CheckStaff(string StaffName, string StaffPass)
 
 int StaffMenu()
 {
-    cout<<"\n"<<setfill('-')<<setw(30)<<""<<endl;
-    cout<<"Dashboard"<<endl;
-    cout<<setfill('-')<<setw(30)<<""<<endl;
+    system("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"      Staff Dashboard"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
     cout<<"1. View Available Rooms"<<endl;
     cout<<"2. Check In Customers"<<endl;
     cout<<"3. Check Out Customers"<<endl;
@@ -1176,7 +1319,7 @@ int StaffMenu()
     cout<<"9. Exit"<<endl;
    while (true)
    {
-       cout << "\nEnter your choice: ";
+       cout<<yellow<<"\nEnter your choice: "<<reset;
        string option;
        getline(cin, option);
 
@@ -1203,9 +1346,10 @@ string ViewAvailableRooms()
         return "Error opening Rooms Status file.";
     }
 
-    cout<< setfill('-') << setw(40) << "" << endl;
-    cout << "Available Rooms:\n";
-    cout << setfill('-') << setw(40) << "" << endl;
+    system ("cls");
+    cout<<cyan<< setfill('-') << setw(40) << "" <<reset<< endl;
+    cout<< green << "        Available Rooms:\n" << reset;
+    cout<<cyan<< setfill('-') << setw(40) << "" <<reset<< endl;
 
     string RoomNum, Status, guest;
 
@@ -1231,12 +1375,20 @@ string ViewAvailableRooms()
     }
 
     file.close();
+
+    cout<<endl;
+    system("pause");
     return "Success";
 }
 
 // Check In Function    
 string CheckIn()
 {
+    system ("cls");
+    cout<<cyan<<setfill('-')<<setw(40)<<""<<reset<<endl;
+    cout<<green<<"        Check-In Customers"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(40)<<""<<reset<<endl;
+
     string guestName, roomNum, checkIn, checkOut;
 
     // 1. Get booking details
@@ -1331,6 +1483,8 @@ string CheckIn()
                 << checkOut << "\n\n";
     bookingsOut.close();
 
+    cout<<green<<"\nCheck-In Successful! Booking ID: "<<bookingID<<reset<<endl<<endl;
+    system("pause");
     return "Check-In Successful! Booking ID: " + bookingID;
 }
 
@@ -1338,6 +1492,10 @@ string CheckIn()
 
 string CheckOut()
 {
+    system ("cls");
+    cout<<cyan<<setfill('-')<<setw(40)<<""<<reset<<endl;
+    cout<<green<<"        Check-Out Customers"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(40)<<""<<reset<<endl;
     string roomNum;
 
     // 1. Ask staff for room number
@@ -1390,6 +1548,8 @@ string CheckOut()
     roomsOut << fileContent;
     roomsOut.close();
 
+    cout<<green<<"\nCheck-Out Successful! Room "<<roomNum<<" is now available."<<reset<<endl<<endl;
+    system("pause");
     return "Check-Out Successful! Room " + roomNum + " is now available.";
 }
 
@@ -1397,6 +1557,11 @@ string CheckOut()
 
 string ViewGuestBookings()
 {
+    system ("cls");
+    cout<<cyan<<setfill('-')<<setw(50)<<""<<reset<<endl;
+    cout<<green<<"        View Guest Bookings"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(50)<<""<<reset<<endl;
+
     string guestName;
     cout << "Enter Guest Name to search: ";
     getline(cin, guestName);
@@ -1409,10 +1574,6 @@ string ViewGuestBookings()
 
     bool found = false;
     string bookingID, roomNum, checkIn, checkOut, line;
-    
-    cout << setfill('-') << setw(50) << "" << endl;
-    cout << "Bookings for Guest: " << guestName << endl;
-    cout << setfill('-') << setw(50) << "" << endl;
 
     while (true)
     {
@@ -1435,9 +1596,13 @@ string ViewGuestBookings()
 
     if (!found)
     {
+        cout<<red<<"\nNo bookings found for guest: "<<guestName<<reset<<endl<<endl;
+        system("pause");
         return "No bookings found for guest: " + guestName;
     }
 
+    cout<<endl;
+    system("pause");
     return "End of bookings for " + guestName;
 }
 
@@ -1445,6 +1610,11 @@ string ViewGuestBookings()
 
 string UpdateGuestBooking()
 {
+    system ("cls");
+    cout<<cyan<<setfill('-')<<setw(50)<<""<<reset<<endl;
+    cout<<green<<"        Update Guest Booking"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(50)<<""<<reset<<endl;
+
     const int MaxBookings = 100;
 
     string bookings[MaxBookings][5];
@@ -1482,7 +1652,7 @@ string UpdateGuestBooking()
         {
             found = true;
 
-            cout<<"Current Guest Name: "<<bookings[i][1]<<"\nEnter new Guest Name (or press Enter to keep current): ";
+            cout<<"\nCurrent Guest Name: "<<bookings[i][1]<<"\nEnter new Guest Name (or press Enter to keep current): ";
             string newGuestName;
             getline(cin, newGuestName);
             if(!newGuestName.empty())
@@ -1490,7 +1660,7 @@ string UpdateGuestBooking()
                 bookings[i][1] = newGuestName;
             }
 
-            cout<<"Current Room Number: "<<bookings[i][2]<<"\nEnter new Room Number (or press Enter to keep current): ";
+            cout<<"\nCurrent Room Number: "<<bookings[i][2]<<"\nEnter new Room Number (or press Enter to keep current): ";
             string newRoomNum;
             getline(cin, newRoomNum);
             if(!newRoomNum.empty())
@@ -1498,7 +1668,7 @@ string UpdateGuestBooking()
                 bookings[i][2] = newRoomNum;
             }
 
-            cout<<"Current Check-In Date: "<<bookings[i][3]<<"\nEnter new Check-In Date (or press Enter to keep current): ";
+            cout<<"\nCurrent Check-In Date: "<<bookings[i][3]<<"\nEnter new Check-In Date (or press Enter to keep current): ";
             string newCheckIn;
             getline(cin, newCheckIn);
             if(!newCheckIn.empty())
@@ -1506,7 +1676,7 @@ string UpdateGuestBooking()
                 bookings[i][3] = newCheckIn;
             }
 
-            cout<<"Current Check-Out Date: "<<bookings[i][4]<<"\nEnter new Check-Out Date (or press Enter to keep current): ";
+            cout<<"\nCurrent Check-Out Date: "<<bookings[i][4]<<"\nEnter new Check-Out Date (or press Enter to keep current): ";
             string newCheckOut;
             getline(cin, newCheckOut);
             if(!newCheckOut.empty())
@@ -1519,6 +1689,8 @@ string UpdateGuestBooking()
 
     if (!found)
     {
+        cout<<red<<"\nBooking ID "<<newbookingID<<" not found."<<reset<<endl<<endl;
+        system("pause");
         return "Booking ID not found.";
     }
 
@@ -1534,6 +1706,8 @@ string UpdateGuestBooking()
 
     outFile.close();
 
+    cout<<green<<"\nBooking updated successfully."<<reset<<endl<<endl;
+    system("pause");
     return "Booking updated successfully.";
 }
 
@@ -1541,6 +1715,11 @@ string UpdateGuestBooking()
 
 string CancelBooking()
 {
+    system ("cls");
+    cout<<cyan<<setfill('-')<<setw(40)<<""<<reset<<endl;
+    cout<<green<<"        Cancel Booking"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(40)<<""<<reset<<endl;
+
     const int MAX_BOOKINGS = 100;
     string bookings[MAX_BOOKINGS][5];
     int totalBookings = 0;
@@ -1595,8 +1774,12 @@ string CancelBooking()
         }
     }
 
-    if (!found) return "Booking ID not found.";
-
+    if (!found)
+    {
+        cout<<red<<"\nBooking ID "<<bookingID<<" not found."<<reset<<endl<<endl;
+        system("pause");
+        return "Booking ID not found.";
+    }
     // Update Bookings.txt
     fstream outFile("Bookings.txt", ios::out);
     for (int i = 0; i < totalBookings; i++)
@@ -1644,6 +1827,8 @@ string CancelBooking()
     roomsOut << roomData;
     roomsOut.close();
 
+    cout<<green<<"\nBooking canceled successfully! Room "<<canceledRoom<<" is now available."<<reset<<endl<<endl;
+    system("pause");
     return "Booking canceled successfully! Room " + canceledRoom + " is now available.";
 }
 
@@ -1651,6 +1836,11 @@ string CancelBooking()
 
 void GenerateInvoice()
 {
+    system ("cls");
+    cout<<cyan<<setfill('-')<<setw(40)<<""<<reset<<endl;
+    cout<<green<<"      Generate Invoice"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(40)<<""<<reset<<endl;
+
     string guestName, roomNum, checkIn, checkOut, bookingID;
     
     cout<<"Enter Booking ID: ";
@@ -1679,7 +1869,8 @@ void GenerateInvoice()
     int outYear = stoi(checkOut.substr(6, 4));
 
     // Display Invoice
-    cout << "\n--- Invoice ---\n";
+    system ("cls");
+    cout<<cyan<<"\n----- Invoice -----\n"<<reset;
     cout << "Booking ID: " << bookingID << endl;
     cout << "Guest: " << guestName << endl;
     cout << "Room Number: " << roomNum << endl;
@@ -1692,12 +1883,20 @@ void GenerateInvoice()
 
     int ratePerDay = roomPrice; 
     cout << "Total Amount: Rs. " << totalDays * ratePerDay << endl;
+    cout<<cyan<<"--------------------\n"<<reset;
+    cout<<endl;
+    system("pause");
 }
 
 // Update Room Prices Function
 
 void UpdateRoomPrices()
 {
+    system ("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"      Update Room Prices"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl<<endl;
+
     int newPrice;
     cout << "Enter new room price per day: Rs. ";
     cin >> newPrice;
@@ -1713,14 +1912,21 @@ void UpdateRoomPrices()
         file.close();
     }
 
-    cout << "Room price updated to Rs. " << roomPrice << " per day." << endl;
+    cout<<green<< "Room price updated to Rs. " << roomPrice << " per day." <<reset<< endl<<endl;
+    system("pause");
 }
 
 // See Room Prices Function
 
 void RoomPrices()
 {
-    cout << "Current room price per day: Rs. " << roomPrice <<" for all rooms." << endl;
+    system ("cls");
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl;
+    cout<<green<<"      Room Prices"<<reset<<endl;
+    cout<<cyan<<setfill('-')<<setw(30)<<""<<reset<<endl<<endl;
+
+    cout << "Current room price per day: Rs. " << roomPrice <<" for all rooms." << endl<<endl;
+    system("pause");
 }
 
 // Load Room Price Function
